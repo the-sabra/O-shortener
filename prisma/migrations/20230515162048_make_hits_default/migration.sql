@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `Urls` MODIFY `hits` INTEGER NOT NULL DEFAULT 0;

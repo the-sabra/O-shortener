@@ -1,6 +1,6 @@
 export type NewUrl = {
-    longUrl:string;
-    userId:string;
-    host:string;
-    protocol:string
-}
+  longUrl: string;
+  userId: string;
+  host: string;
+  protocol: string;
+};

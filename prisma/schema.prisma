@@ -21,7 +21,7 @@ model User {
   
 model Urls{ 
   id         String            @id @default(uuid()) 
-  long_url   String   
+  long_url   String            @db.VarChar(500)
   short_code String            @unique
   hits       Int               @default(0)
   createdAt  DateTime          @default(now())

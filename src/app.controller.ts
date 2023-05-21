@@ -10,7 +10,10 @@ export class AppController {
     private readonly appService: AppService,
     private urlService: UrlsService,
   ) {}
-
+    @Get('/')
+    getHello(){
+      return 'Hello World!'
+    }
   @Get('/:short')
   @Redirect()
   async getShortUrl(@Param('short') short: string, @Req() req: UserAuth) {

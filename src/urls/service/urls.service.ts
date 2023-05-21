@@ -1,14 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { isValidUrl } from '../utils/isValidUrl';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../../prismaService/prisma.service';
 import { NewUrl } from '../utils/NewUrlType';
 import { Urls } from '@prisma/client';
-import { fail } from 'node:assert';
 import { UpdatedUrl } from '../utils/updatedUrl';
-const crypto = import('node:crypto');
+
 @Injectable()
 export class UrlsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async createUrlShorter(longUrlData: NewUrl) {
     if (!isValidUrl(longUrlData.longUrl)) {
@@ -17,7 +16,7 @@ export class UrlsService {
         HttpStatus.NOT_ACCEPTABLE,
       );
     }
-    let crypto = await import('node:crypto');
+    const crypto = await import('node:crypto');
     try {
       let short = crypto.randomBytes(3).toString('hex');
 
@@ -46,41 +45,42 @@ export class UrlsService {
           user_id: longUrlData.userId,
         },
       });
-      const shortURl: string = `${longUrlData.protocol}://${longUrlData.host}/${short}`;
+      const shortURl = `${longUrlData.protocol}://${longUrlData.host}/${short}`;
       return { newURL: shortURl, urlId: res.id };
     } catch (error) {
-      throw new HttpException(
-        { status: false, reason: 'something wrong' },
-        HttpStatus.FORBIDDEN,
-      );
+      throw error;
     }
   }
 
   // the controller in app controller to be URL short
   async getLongUrl(shortCode: string, userId: string) {
-    const res: { long_url: string } = await this.prisma.urls.findFirst({
-      where: {
-        short_code: shortCode,
-        user_id: userId,
-      },
-      select: {
-        id: false,
-        short_code: false,
-        updateAt: false,
-        createdAt: false,
-        long_url: true,
-      },
-    });
-    if (!res) {
-      throw new HttpException('this link not found', HttpStatus.NOT_FOUND);
+    try {
+      const res: { long_url: string } = await this.prisma.urls.findFirst({
+        where: {
+          short_code: shortCode,
+          user_id: userId,
+        },
+        select: {
+          id: false,
+          short_code: false,
+          updateAt: false,
+          createdAt: false,
+          long_url: true,
+        },
+      });
+      if (!res) {
+        throw new HttpException('this link not found', HttpStatus.NOT_FOUND);
+      }
+      await this.prisma.urls.update({
+        where: { short_code: shortCode },
+        data: { hits: { increment: 1 } },
+      });
+      return res.long_url;
+    } catch (error) {
+      throw error;
     }
-    const updateHits = await this.prisma.urls.update({
-      where: { short_code: shortCode },
-      data: { hits: { increment: 1 } },
-    });
-    return res.long_url;
   }
-  
+
   async updateLongUrl(newURL: { urlId: string; long_url: string }) {
     try {
       const url: UpdatedUrl = await this.prisma.urls.update({
@@ -99,34 +99,35 @@ export class UrlsService {
           hits: true,
         },
       });
-      return { res:url, status: true };
+      return { res: url, status: true };
     } catch (error) {
-      throw new HttpException(
-        { status: false, reason: 'something wrong' },
-        HttpStatus.FORBIDDEN,
-      );
+      throw error;
     }
   }
 
   async getUserUrls(userId: string, email: string) {
-    const user_urls = await this.prisma.user.findFirst({
-      where: {
-        id: userId,
-        email: email,
-      },
-      select: {
-        id: false,
-        name: true,
-        email: true,
-        urls: {
-          select: {
-            id: false,
-            hits: true,
-            short_code: true,
+    try {
+      const user_urls = await this.prisma.user.findFirst({
+        where: {
+          id: userId,
+          email: email,
+        },
+        select: {
+          id: false,
+          name: true,
+          email: true,
+          urls: {
+            select: {
+              id: false,
+              hits: true,
+              short_code: true,
+            },
           },
         },
-      },
-    });
-    return {res:user_urls,status:true}
+      });
+      return { res: user_urls, status: true };
+    } catch (error) {
+      throw error;
+    }
   }
 }

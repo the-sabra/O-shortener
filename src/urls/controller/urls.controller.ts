@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
   Post,
   Put,
   Req,
@@ -37,5 +39,11 @@ export class UrlsController {
   UserUrls(@Req() req: UserAuth) {
     const { userId, email } = req;
     return this.urlService.getUserUrls(userId, email);
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete('/delete/:shortcode')
+  deleteURl(@Param('shortcode') shortcode) {
+    return this.urlService.deleteURl(shortcode);
   }
 }

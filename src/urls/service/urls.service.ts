@@ -18,6 +18,12 @@ export class UrlsService {
     }
     const crypto = await import('node:crypto');
     try {
+      if (await this.userExist(longUrlData.userId)) {
+        throw new HttpException(
+          { status: false, reason: 'user not found' },
+          HttpStatus.NOT_FOUND,
+        );
+      }
       let short = crypto.randomBytes(3).toString('hex');
 
       const checkShortCodeExists = await this.prisma.urls.findFirst({
@@ -55,6 +61,12 @@ export class UrlsService {
   // the controller in app controller to be URL short
   async getLongUrl(shortCode: string, userId: string) {
     try {
+      if (await this.userExist(userId)) {
+        throw new HttpException(
+          { status: false, reason: 'user not found' },
+          HttpStatus.NOT_FOUND,
+        );
+      }
       const res: { long_url: string } = await this.prisma.urls.findFirst({
         where: {
           short_code: shortCode,
@@ -125,9 +137,35 @@ export class UrlsService {
           },
         },
       });
+      console.log(user_urls);
       return { res: user_urls, status: true };
     } catch (error) {
       throw error;
     }
+  }
+
+  async deleteURl(shortCode: string) {
+    try {
+      const checkURlExist = await this.prisma.urls.findUnique({
+        where: { short_code: shortCode },
+      });
+      if (!checkURlExist) {
+        throw new HttpException('short code not found', HttpStatus.NOT_FOUND);
+      }
+      await this.prisma.urls.delete({ where: { short_code: shortCode } });
+      return {
+        status: true,
+        res: 'Delete Done',
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async userExist(userId: string): Promise<boolean> {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    const check = user === null;
+    console.log(check);
+    return check;
   }
 }

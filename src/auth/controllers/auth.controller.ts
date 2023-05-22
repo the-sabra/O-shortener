@@ -13,7 +13,7 @@ import { LoginDto } from '../Dtos/logn.dto';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post('/signin')
+  @Post('/signup')
   @UsePipes(new ValidationPipe())
   async userSignup(@Body() userData: UserDto) {
     return await this.authService.signUp(userData);

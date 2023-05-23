@@ -41,7 +41,7 @@ $ npm run start:prod
 ## Routing system
 ---------
   
-## sign up rout 
+## sign up route 
 
 ```
 POST : https://o-shortner.up.railway.app/auth/signup
@@ -135,7 +135,7 @@ the response will be
     "status": true
 }
 ```
-## for delete the short URL 
+## To delete the short URL
 
 ```
 DELETE: http://o-shortner.up.railway.app/urls/delete/shortcode

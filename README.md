@@ -1,156 +1,107 @@
-	# O-shortener
+# Overview 
+O-shortener is used to make short urls 
 
-  
+## Built With
+[![Nest][nest]][Nest-url] 
+[![Mysql]][mysql-url] 
+[![Prisma]][prisma-url] 
+[![TypeScript]][typescript-url] 
+[![Jest]][jest-url]
+
+
+
+## API Endpoints
+  * `POST /auth/signup` : Create a new User
+  * `GET /:short_code` :   Redirect to the original URL based on the provided short code.
+
+For detailed documentation and examples, refer to the [API Documentation](https://documenter.getpostman.com/view/22968167/2s93sabtNc) file.
+
 
 ## Installation
 
-  
+1- clone the Repo 
 
 ```bash
-
-$ npm install
-
+git clone https://github.com/omarsabra1/O-shortener
 ```
 
-  
+```bash
+cd o-shortener
+npm install
+```
 
 ## Running the app
 
-  
 
 ```bash
 
 # development
-
 $ npm run start
 
-  
-
 # watch mode
-
 $ npm run start:dev
 
-  
-
 # production mode
-
 $ npm run start:prod
 
 ```
----------
-## Routing system
----------
-  
-## sign up route 
 
-```
-POST : https://o-shortner.up.railway.app/auth/signup
-```
-```json
-{
-    "name":"omar",
-    "email":"omar@test.com",
-    "password":"test123"
-}
-```
-response will be 
-```json
-{
-    "status": true,
-    "res": {
-        "name": "omar",
-        "email": "omar@test.com"
-    }
-} 
-``` 
----------
-## login rout 
-
-```
-POST : https://o-shortner.up.railway.app/auth/login
-```
-
-```json
-{
-    "email": "omar@test.com",
-    "password": "test123"
-}
-```
-
-	the response will be the access token
-
-```json
-{
-    "access_token": "token........"
-}
-```
+## How code is work 
 ---------
 
-## create new short URl 
-
 ```
-POST : https://o-shortner.up.railway.app/urls/to_short
+src
+│   ├── main.ts
+│   ├── app.controller.spec.ts
+│   ├── app.controller.ts
+│   ├── auth
+│   │   ├── Dtos
+│   │   ├── auth.module.ts
+│   │   ├── controllers
+│   │   ├── guard
+│   │   │   └── auth
+│   │   │       └── auth.guard.ts
+│   │   ├── service
+│   │   └── utils
+│   ├── prismaService
+│   └── urls
+│       ├── controller
+│       │   ├── Dtos
+│       │   └── urls.controller.ts
+│       ├── service
+│       ├── urls.module.ts
+│       └── utils
 ```
+NOTE : **The controller mange the routes only but the services for business logic and connecting With ORM** 
+* `main.ts` : The entry point of the application.
+* `urls/controller/urls.controller.ts` : Handles the creation of shortened URLs.
+* `prismaService` : is used to connect  Prisma Client.
+* `app.controller.ts` : Handles the redirection to the original URLs.
+* `auth/controller/auth.controller.ts` : Handles Authentication and creating user 
+* `auth/guard/auth/auth.guard.ts` : verifying JWT Token  
 
-NOTE: 
----------
-but your token in authorization header bearer token to create new short URl
 
----------
+## License
+O-shortener under the  [MIT licensed](LICENSE.txt).
 
-```json
-{
-    "long_url":"https://...test.com/test.etc..."
-}   
-```
-	the response will be the new short URl 🔥
-```json 
-{
-    "newURL": "http://o-shortner.up.railway.app/shortcode",
-}
-```
+## Contact 
+[![LinkedIn]][LinkedIn-profile]
+[![Gmail]][email]
 
-## get the user short URls and the hits of his urls 
+<!-- MARKDOWN LINKS & IMAGES -->
+[nest]: https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white
+[MySQL]: https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white
+[Prisma]: https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white
+[Jest]: https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white
+[TypeScript]: https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white
+[Jest]: https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white
+[LinkedIn]: https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white
+[Gmail]: https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white
 
-will be follow this rout 
-
-```
-GET: http://o-shortner.up.railway.app/shortcode/urls/user
-```
-Note TOKEN needed todo this 
-
-the response will be 
-```json 
-{
-    "res": {
-        "name": "omar",
-        "email": "omar@test.com",
-        "urls": [
-            {
-                "hits": "number",
-                "short_code": "code"
-            },
-        ]
-    },
-    "status": true
-}
-```
-## To delete the short URL
-
-```
-DELETE: http://o-shortner.up.railway.app/urls/delete/shortcode
-```
-Note TOKEN needed todo this 
-
-the response will be 
-```json 
-{
-    "status": true,
-    "res": "Delete Done"
-}
-```
-### License
-
-  
-
-O-shortener is [MIT licensed](LICENSE).
+[nest-url]: https://nestjs.com/
+[typeScript-url]: https://www.typescriptlang.org/
+[prisma-url]: https://www.prisma.io/
+[jest-url]: https://jestjs.io/
+[mysql-url]: https://www.mysql.com/
+[linkedIn-profile]: https://www.linkedin.com/in/omar-sabra/
+[email]: omarsabra509@gmail.com

@@ -1,25 +1,18 @@
-import { Controller, Get, Param, Redirect, Req } from '@nestjs/common';
-import { AppService } from './app.service';
-import { get } from 'http';
+import { Controller, Get, Param, Redirect } from '@nestjs/common';
 import { UrlsService } from './urls/service/urls.service';
-import { UserAuth } from './urls/controller/Dtos/PayloadDto';
 
 @Controller()
 export class AppController {
-  constructor(
-    private readonly appService: AppService,
-    private urlService: UrlsService,
-  ) {}
-    @Get('/')
-    getHello(){
-      return 'Hello World!'
-    }
+  constructor(private urlService: UrlsService) {}
+  @Get('/')
+  getHello() {
+    console.log(process.env.DOCS_URL);
+    return `Hello in O-shortener 🥰 <a href=${process.env.DOCS_URL}>API Docs</a>`;
+  }
   @Get('/:short')
   @Redirect()
-  async getShortUrl(@Param('short') short: string, @Req() req: UserAuth) {
-    const { userId } = req;
-    const longUrl = await this.urlService.getLongUrl(short, userId);
+  async getShortUrl(@Param('short') short: string) {
+    const longUrl = await this.urlService.getLongUrl(short);
     return { url: longUrl };
   }
 }
-  

@@ -36,6 +36,7 @@ export class UrlsController {
   }
 
   @Get('/user')
+  @UseGuards(AuthGuard)
   UserUrls(@Req() req: UserAuth) {
     const { userId, email } = req;
     return this.urlService.getUserUrls(userId, email);

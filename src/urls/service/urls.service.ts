@@ -59,18 +59,11 @@ export class UrlsService {
   }
 
   // the controller in app controller to be URL short
-  async getLongUrl(shortCode: string, userId: string) {
+  async getLongUrl(shortCode: string) {
     try {
-      if (await this.userExist(userId)) {
-        throw new HttpException(
-          { status: false, reason: 'user not found' },
-          HttpStatus.NOT_FOUND,
-        );
-      }
       const res: { long_url: string } = await this.prisma.urls.findFirst({
         where: {
           short_code: shortCode,
-          user_id: userId,
         },
         select: {
           id: false,
@@ -137,7 +130,6 @@ export class UrlsService {
           },
         },
       });
-      console.log(user_urls);
       return { res: user_urls, status: true };
     } catch (error) {
       throw error;

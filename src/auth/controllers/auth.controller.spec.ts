@@ -4,7 +4,7 @@ import { PrismaService } from 'src/prismaService/prisma.service';
 import { AuthService } from '../service/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { HttpException } from '@nestjs/common';
-import { mockAuthService } from '../../../__mo/mockAuthService';
+import { mockAuthService } from '../../../__mocks__/mockAuthService';
 
 describe('AuthController', () => {
   let controller: AuthController;

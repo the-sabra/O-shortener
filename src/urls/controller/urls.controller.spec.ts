@@ -4,12 +4,13 @@ import { AuthModule } from 'src/auth/auth.module';
 import { JwtService } from '@nestjs/jwt';
 import { UrlsService } from '../service/urls.service';
 import { PrismaService } from 'src/prismaService/prisma.service';
-import { MockUrlsService } from '../../../__mo/mockUrlService';
+
 import { faker } from '@faker-js/faker';
 import { UserAuth } from './Dtos/PayloadDto';
 import { UpdateUrlDto } from './Dtos/updateUrl';
 import { HttpException } from '@nestjs/common';
 import { reqStubError, requestSTub } from './stub/requestStub';
+import { MockUrlsService } from '../../../__mocks__/mockUrlService';
 
 const updateUrlStub = {
   long_url: new URL('http://hello@f*kdf.com'),

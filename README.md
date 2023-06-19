@@ -1,107 +1,49 @@
-# Overview 
-O-shortener is used to make short urls 
+# O-shortener Overview
 
-## Built With
-[![Nest][nest]][Nest-url] 
-[![Mysql]][mysql-url] 
-[![Prisma]][prisma-url] 
-[![TypeScript]][typescript-url] 
-[![Jest]][jest-url]
+The O-shortener is a URL shortening application that converts long URLs into manageable links that won’t break in email postings.
 
-
+## Technologies Used
+- NestJS, a progressive Node.js framework for building efficient, reliable and scalable server-side applications.
+- MySQL, a relational database management system.
+- Prisma, an open-source database ORM (Object-relational mapping).
+- TypeScript, a strongly typed superset of JavaScript.
+- Jest, a delightful JavaScript Testing Framework with a focus on simplicity.
 
 ## API Endpoints
-  * `POST /auth/signup` : Create a new User
-  * `GET /:short_code` :   Redirect to the original URL based on the provided short code.
+- `POST /auth/signup`: Register a new user.
+- `GET /:short_code`: Redirect to the original URL associated with the given short code.
 
-For detailed documentation and examples, refer to the [API Documentation](https://documenter.getpostman.com/view/22968167/2s93sabtNc) file.
+Refer to the [API Documentation](https://documenter.getpostman.com/view/22968167/2s93sabtNc) for detailed documentation and examples.
 
+## Installation Process
 
-## Installation
+1. Clone the repository by using the following command: `git clone https://github.com/omarsabra1/O-shortener`.
+2. Navigate into the cloned repository: `cd o-shortener`.
+3. Install the necessary dependencies: `npm install`.
 
-1- clone the Repo 
+## Running the Application
 
-```bash
-git clone https://github.com/omarsabra1/O-shortener
-```
+- To run the app in development mode, use: `npm run start`.
+- To run the app in watch mode, use: `npm run start:dev`.
+- To run the app in production mode, use: `npm run start:prod`.
 
-```bash
-cd o-shortener
-npm install
-```
+## Code Structure
 
-## Running the app
+The application code is organized as follows:
 
+- `main.ts`: The entry point of the application.
+- `urls/controller/urls.controller.ts`: Manages the creation of shortened URLs.
+- `prismaService`: Connects to Prisma Client.
+- `app.controller.ts`: Manages the redirection to original URLs.
+- `auth/controller/auth.controller.ts`: Manages user authentication and creation.
+- `auth/guard/auth/auth.guard.ts`: Verifies JWT tokens.
 
-```bash
-
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-
-```
-
-## How code is work 
----------
-
-```
-src
-│   ├── main.ts
-│   ├── app.controller.spec.ts
-│   ├── app.controller.ts
-│   ├── auth
-│   │   ├── Dtos
-│   │   ├── auth.module.ts
-│   │   ├── controllers
-│   │   ├── guard
-│   │   │   └── auth
-│   │   │       └── auth.guard.ts
-│   │   ├── service
-│   │   └── utils
-│   ├── prismaService
-│   └── urls
-│       ├── controller
-│       │   ├── Dtos
-│       │   └── urls.controller.ts
-│       ├── service
-│       ├── urls.module.ts
-│       └── utils
-```
-NOTE : **The controller mange the routes only but the services for business logic and connecting With ORM** 
-* `main.ts` : The entry point of the application.
-* `urls/controller/urls.controller.ts` : Handles the creation of shortened URLs.
-* `prismaService` : is used to connect  Prisma Client.
-* `app.controller.ts` : Handles the redirection to the original URLs.
-* `auth/controller/auth.controller.ts` : Handles Authentication and creating user 
-* `auth/guard/auth/auth.guard.ts` : verifying JWT Token  
-
+Note: The controllers manage the routes, while the services handle the business logic and connect to the ORM.
 
 ## License
-O-shortener under the  [MIT licensed](LICENSE.txt).
 
-## Contact 
-[![LinkedIn]][LinkedIn-profile]
-[![Gmail]][email]
+O-shortener is [MIT licensed](LICENSE.txt).
 
-<!-- MARKDOWN LINKS & IMAGES -->
-[nest]: https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white
-[MySQL]: https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white
-[Prisma]: https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white
-[Jest]: https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white
-[TypeScript]: https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white
-[Jest]: https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white
-[LinkedIn]: https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white
-[Gmail]: https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white
+## Contact Information
 
-[nest-url]: https://nestjs.com/
-[typeScript-url]: https://www.typescriptlang.org/
-[prisma-url]: https://www.prisma.io/
-[jest-url]: https://jestjs.io/
-[mysql-url]: https://www.mysql.com/
-[linkedIn-profile]: https://www.linkedin.com/in/omar-sabra/
-[email]: omarsabra509@gmail.com
+Feel free to reach out on LinkedIn or via email.

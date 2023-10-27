@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: mysql
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'urlDB'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: '1234'
+      MYSQL_TCP_PORT: 3307
+    ports:
+      # <Port exposed> : <MySQL Port running inside container>
+      - '3307:3307'
+    expose:
+      # Opens port 3306 on the container
+      - '3307'
+      # Where our data will be persisted
+    volumes:     
+    - o-db:/var/lib/mysql
+  redis:
+    container_name: redis
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - cache:/data
+  o-shortener:
+    container_name: o-shortener_container
+    build: 
+      context: .
+      args:
+        - NODE_ENV=development
+    volumes:
+      - ./src:/app/src
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./.env
+    links:
+      - db
+      - redis
+
+volumes:
+  o-db:
+    driver: local
+  cache:
+    driver: local
+  o-shortener:

@@ -4,10 +4,14 @@ import { PrismaService } from '../../prismaService/prisma.service';
 import { NewUrl } from '../utils/NewUrlType';
 import { Urls } from '@prisma/client';
 import { UpdatedUrl } from '../utils/updatedUrl';
+import { CachingService } from 'src/caching/caching.service';
 
 @Injectable()
 export class UrlsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly CashService: CachingService,
+  ) {}
 
   async createUrlShorter(longUrlData: NewUrl) {
     if (!isValidUrl(longUrlData.longUrl)) {
@@ -61,26 +65,37 @@ export class UrlsService {
   // the controller in app controller to be URL short
   async getLongUrl(shortCode: string) {
     try {
-      const res: { long_url: string } = await this.prisma.urls.findFirst({
-        where: {
-          short_code: shortCode,
-        },
-        select: {
-          id: false,
-          short_code: false,
-          updateAt: false,
-          createdAt: false,
-          long_url: true,
-        },
-      });
-      if (!res) {
-        throw new HttpException('this link not found', HttpStatus.NOT_FOUND);
+      if (!(await this.CashService.isCashed(shortCode))) {
+        const res: { long_url: string } = await this.prisma.urls.findFirst({
+          where: {
+            short_code: shortCode,
+          },
+          select: {
+            id: false,
+            short_code: false,
+            updateAt: false,
+            createdAt: false,
+            long_url: true,
+          },
+        });
+        if (!res) {
+          throw new HttpException('this link not found', HttpStatus.NOT_FOUND);
+        }
+        await this.updateHit(shortCode);
+        // console.log(`uncached`);
+        await this.CashService.setData(shortCode, res.long_url, 900000);
+        return res.long_url;
+      } else {
+        const cashedOutput = await this.CashService.getData(shortCode);
+        
+        // await this.prisma.urls.update({
+        //   where: { short_code: shortCode },
+        //   data: { hits: { increment: 1 } },
+        // });
+        await this.updateHit(shortCode);
+        // console.log(`cached`);
+        return cashedOutput;
       }
-      await this.prisma.urls.update({
-        where: { short_code: shortCode },
-        data: { hits: { increment: 1 } },
-      });
-      return res.long_url;
     } catch (error) {
       throw error;
     }
@@ -154,10 +169,22 @@ export class UrlsService {
     }
   }
 
-  async userExist(userId: string): Promise<boolean> {
+  private async userExist(userId: string): Promise<boolean> {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
     const check = user === null;
     console.log(check);
     return check;
+  }
+
+  // increment the hit counter +1
+  private async  updateHit(shortCode:string) {
+    try {
+      await this.prisma.urls.update({
+        where: { short_code: shortCode },
+        data: { hits: { increment: 1 } },
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 }

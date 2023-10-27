@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -19,6 +20,7 @@ export class AuthService {
       if (checkEmail) {
         throw new HttpException('email exist', HttpStatus.NOT_ACCEPTABLE);
       }
+      
       const hashPassword = await bcrypt.hash(newUser.password, 12);
       const n_user = await this.prisma.user.create({
         data: {

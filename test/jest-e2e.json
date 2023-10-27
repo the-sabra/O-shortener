@@ -1,5 +1,5 @@
 {
-  "moduleDirectories": ["node_modules", "src"],
+  "moduleDirectories": ["src"],
   "moduleFileExtensions": ["js", "json", "ts"],
   "rootDir": "src",
   "testEnvironment": "node",

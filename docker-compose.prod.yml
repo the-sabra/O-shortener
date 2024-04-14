@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   db:
-    container_name: mysql
+    container_name: mysql_shortner 
     image: mysql
     restart: always
     environment:

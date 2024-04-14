@@ -6,7 +6,6 @@ export class AppController {
   constructor(private urlService: UrlsService) {}
   @Get('/')
   getHello() {
-    console.log(process.env.DOCS_URL);
     return `Hello in O-shortener 🥰 <a href=${process.env.DOCS_URL}>API Docs !</a>`;
   }
   @Get('/:short')

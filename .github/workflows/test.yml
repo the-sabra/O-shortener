@@ -9,13 +9,13 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - name: test
-              run: echo "welcome"
+              run: echo "welcome 2"
               shell: bash
     goodbye:
         runs-on: ubuntu-latest
         steps:
             - name: goodbye world
-              run: echo "GoodBye World"
+              run: echo "Goodbye World"
               shell: bash
 
       

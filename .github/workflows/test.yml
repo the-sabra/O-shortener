@@ -7,15 +7,15 @@ jobs:
     hello:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@latest
+            - uses: actions/checkout@v2
             - name: test
-            run: echo "welcome"
-            shell: bash
+              run: echo "welcome"
+              shell: bash
     goodbye:
         runs-on: ubuntu-latest
         steps:
             - name: goodbye world
-            run: echo "GoodBye World";
-            shell: bash
+              run: echo "GoodBye World"
+              shell: bash
 
-     
+      

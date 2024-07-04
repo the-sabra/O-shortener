@@ -10,5 +10,5 @@ import { CachingService } from 'src/caching/caching.service';
   imports: [AuthModule],
   providers: [PrismaService, UrlsService, JwtService, CachingService],
   controllers: [UrlsController],
-}) 
+})
 export class UrlsModule {}

@@ -87,7 +87,7 @@ export class UrlsService {
         return res.long_url;
       } else {
         const cashedOutput = await this.CashService.getData(shortCode);
-        
+
         // await this.prisma.urls.update({
         //   where: { short_code: shortCode },
         //   data: { hits: { increment: 1 } },
@@ -177,7 +177,7 @@ export class UrlsService {
   }
 
   // increment the hit counter +1
-  private async  updateHit(shortCode:string) {
+  private async updateHit(shortCode: string) {
     try {
       await this.prisma.urls.update({
         where: { short_code: shortCode },

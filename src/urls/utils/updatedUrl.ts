@@ -1,5 +1,5 @@
-export type UpdatedUrl={
-    long_url: string,
-    updateAt: Date,
-    hits: number,
-}
+export type UpdatedUrl = {
+  long_url: string;
+  updateAt: Date;
+  hits: number;
+};

@@ -25,7 +25,13 @@ jobs:
 
         - name: Install dependencies
           run: npm install
-          
+
         - name: echo the install done
           run: echo "install done"
           shell: bash
+
+        - name: Lint 
+          run: npm run lint
+        
+        - name: Build
+          run: npm run build
